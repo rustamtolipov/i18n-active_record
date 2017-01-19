@@ -20,17 +20,19 @@ Your migration should look like this:
   class CreateTranslations < ActiveRecord::Migration
     def self.up
       create_table :translations do |t|
-        t.string :locale
-        t.string :key
-        t.text   :value
+        t.string :locale, null: false
+        t.string :key, null: false
+        t.text   :value, null: false
         t.text   :interpolations
         t.boolean :is_proc, :default => false
 
         t.timestamps
       end
+      add_index :translations, [:locale, :key], unique: true
     end
 
     def self.down
+      remove_index :translations, column: [:locale, :key]
       drop_table :translations
     end
   end

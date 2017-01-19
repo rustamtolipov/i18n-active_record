@@ -46,6 +46,12 @@ module I18n
     #   # => 'FOO'
     class ActiveRecord
       class Translation < ::ActiveRecord::Base
+
+        validates :locale, presence: true
+        validates :key, presence: true
+        validates :value, presence: true
+        validates :locale, uniqueness: { scope: :key }
+
         TRUTHY_CHAR = "\001"
         FALSY_CHAR = "\002"
 
